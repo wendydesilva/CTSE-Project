@@ -13,9 +13,15 @@ class ListPageState extends State<ListPage>{
 
     return qn.documents;
   }
+  void deleteData(DocumentSnapshot doc)async{
+    var firestore = Firestore.instance;
+    await firestore.collection("student").document(doc.documentID).delete();
+
+  }
   navigateToDetail(DocumentSnapshot post){
     Navigator.push(context, MaterialPageRoute(builder: (context) => DetailPage(post:post)));
   }
+
   Widget build(BuildContext context){
     return Scaffold(
       body: Container(
@@ -82,6 +88,7 @@ class ListPageState extends State<ListPage>{
                                 ),
                                 leading: IconButton(
                                   icon: Icon(Icons.delete),
+                                  onPressed: ()=> deleteData(snapshot.data[index]),
                                 ),
                                 onTap: ()=>navigateToDetail(snapshot.data[index]),
 
