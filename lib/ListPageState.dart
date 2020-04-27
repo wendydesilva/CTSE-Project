@@ -69,14 +69,14 @@ class ListPageState extends State<ListPage>{
                 Container(
                     height: 400,
                     child:FutureBuilder(
-                      future : getPost(),
+                     future : getPost(),
                       builder:  (_, snapshot){
                         return ListView.builder(
-                            itemCount: snapshot.data.length,
+                           itemCount: snapshot.data.length,
                             itemBuilder: (_,index){
                               return ListTile(
-                                title: Text(snapshot.data[index].data["name"]),
-                                trailing: FlutterRatingBar(
+                              title: Text(snapshot.data[index].data["name"]),
+                               trailing: FlutterRatingBar(
                                   itemSize: 30,
                                   initialRating: 3,
                                   fillColor: Colors.amber,
@@ -86,7 +86,7 @@ class ListPageState extends State<ListPage>{
                                     print(rating);
                                   },
                                 ),
-                                leading: IconButton(
+                               leading: IconButton(
                                   icon: Icon(Icons.delete),
                                   onPressed: ()=> deleteData(snapshot.data[index]),
                                 ),
