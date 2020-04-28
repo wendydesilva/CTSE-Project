@@ -5,6 +5,7 @@ import 'MyHomePage.dart';
 import 'DetailPage.dart';
 import 'package:provider/provider.dart';
 import 'Home.dart';
+import 'SearchPage.dart';
 
 
 void main() => runApp(MyApp());
@@ -18,6 +19,7 @@ class MyApp extends StatelessWidget {
        ),
       // home: new MyHomePage(),
        home: new Home(),
+
      );
    }
 }

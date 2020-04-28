@@ -3,6 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'MyHomePage.dart';
 import 'ListPage.dart';
+import 'SearchPageState.dart';
+import 'SearchPage.dart';
 
 
 class MyHomePageState extends State<MyHomePage>{
@@ -11,7 +13,15 @@ class MyHomePageState extends State<MyHomePage>{
 
       appBar: new AppBar(
         title: new Text("Student Profile"),
-
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.search),
+            onPressed: (){
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => SearchPage()));
+            },
+          )
+        ],
       ),
       drawer: new Drawer(
         child: new ListView(

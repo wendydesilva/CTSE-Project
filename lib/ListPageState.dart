@@ -91,10 +91,6 @@ class ListPageState extends State<ListPage>{
                                   onPressed: ()=> deleteData(snapshot.data[index]),
                                 ),
                                 onTap: ()=>navigateToDetail(snapshot.data[index]),
-
-
-
-
                               );
                             }
                         );
