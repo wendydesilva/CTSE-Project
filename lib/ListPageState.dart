@@ -13,10 +13,76 @@ class ListPageState extends State<ListPage>{
 
     return qn.documents;
   }
-  void deleteData(DocumentSnapshot doc)async{
+  deleteData(DocumentSnapshot doc)async{
     var firestore = Firestore.instance;
-    await firestore.collection("student").document(doc.documentID).delete();
+    return showDialog(context: context,builder : (BuildContext context){
+      return AlertDialog(
+        title: Text("Confirm delete"),
+        content: SingleChildScrollView(
+          child: ListBody(
+            children: <Widget>[
+              Row(
+                  children: <Widget>[
+                    Column(
+                      children: <Widget>[
+                        GestureDetector(
+                          child: Text("Yes"),
+                          onTap: (){
+                            firestore.collection("student").document(doc.documentID).delete();
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ],
+                    ),
+                    SizedBox(width: 100),
+                    Column(
+                      children: <Widget>[
+                        /*GestureDetector(
+                          child: Text("No"),
+                          onTap: () => Navigator.of(context).pop(),
+                        )*/
+                        GestureDetector(
+                          child: FlatButton(
+                            color: Colors.red,
+                            onPressed: () => Navigator.of(context).pop(),
+                            child: Text("No",style: TextStyle(
+                              color: Colors.white,
+                                  fontWeight: FontWeight.bold
+                            )),
 
+                          ),
+                        )
+                      ],
+                    )
+                  ],
+              )
+
+
+            ],
+          ),
+        ),
+      );
+    });
+
+
+  }
+  OpenDeleteDialog(){
+
+    return AlertDialog(
+      title: Text("Confirm delete"),
+      content: SingleChildScrollView(
+        child: ListBody(
+          children: <Widget>[
+            GestureDetector(
+              child: Text("Yes"),
+              onTap: (){
+
+              },
+            )
+          ],
+        ),
+      ),
+    );
   }
   navigateToDetail(DocumentSnapshot post){
     Navigator.push(context, MaterialPageRoute(builder: (context) => DetailPage(post:post)));
@@ -25,8 +91,8 @@ class ListPageState extends State<ListPage>{
   Widget build(BuildContext context){
     return Scaffold(
       body: Container(
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
+        //width: MediaQuery.of(context).size.width,
+        //height: MediaQuery.of(context).size.height,
         child: Center(
           child: Container(
             width: 400,

@@ -2,8 +2,26 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'SearchPage.dart';
 import 'SearchService.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:student_profile_new/DetailPage.dart';
 
 class SearchPageState extends State<SearchPage>{
+  Future getPost() async{
+    var firestore = Firestore.instance;
+
+    QuerySnapshot qn = await firestore.collection("student").getDocuments();
+
+    return qn.documents;
+  }
+  void deleteData(DocumentSnapshot doc)async{
+    var firestore = Firestore.instance;
+    await firestore.collection("student").document(doc.documentID).delete();
+
+  }
+  navigateToDetail(DocumentSnapshot post){
+    Navigator.push(context, MaterialPageRoute(builder: (context) => DetailPage(post:post)));
+  }
+
   var queryResultSet = [];
   var studentSearchStore = [];
 
@@ -38,10 +56,12 @@ class SearchPageState extends State<SearchPage>{
 
     Widget build(BuildContext context){
       return new Scaffold(
-        body: ListView(
+        body:
+        ListView(
           children: <Widget>[
             Padding(
-              padding: const EdgeInsets.all(10.0),
+              padding: const EdgeInsets.all(1),
+
               child: TextField(
                 onChanged: (val){
                   intiateSearch(val);
@@ -55,7 +75,7 @@ class SearchPageState extends State<SearchPage>{
                       Navigator.of(context).pop();
                     },
                   ),
-                  contentPadding: EdgeInsets.only(left: 25.0),
+                //contentPadding: EdgeInsets.only(left: 25.0),
                   hintText: 'Search by name',
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(4.0)
@@ -64,17 +84,21 @@ class SearchPageState extends State<SearchPage>{
               ),
             ),
             SizedBox(height: 10.0),
-            GridView.count(
-              padding: EdgeInsets.only(left: 10.0,right: 10.0),
-              crossAxisCount: 2,
-              crossAxisSpacing: 4.0,
-              mainAxisSpacing: 4.0,
+
+           /*GridView(
+              padding: EdgeInsets.only(left: 1.0,right: 1.0),
+              //crossAxisCount: 2,
+              //childAspectRatio: 0.75,
+              //crossAxisSpacing: 1.0,
+              //mainAxisSpacing: 1,
+
               primary: false,
-              shrinkWrap: true,
-              children: studentSearchStore.map((element){
+             shrinkWrap: true,
+
+                children: studentSearchStore.map((element){
                  return buildResultCard(element);
             }).toList()
-            )
+            )*/
           ]
         )
       );
@@ -82,7 +106,46 @@ class SearchPageState extends State<SearchPage>{
 }
 
 Widget buildResultCard(data){
-  return ListTile(
-   title: Text(data["name"]),
- );
+
+  return Container(
+   // width: 10,
+    child: Row(
+      children: <Widget>[
+       Expanded(
+         child: Row(
+           //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+           children: <Widget>[
+             Text(data["name"]),
+             SizedBox(width : 100),
+             FlutterRatingBar(
+               itemSize: 30,
+               initialRating: 3,
+               fillColor: Colors.amber,
+               borderColor: Colors.amber.withAlpha(50),
+               allowHalfRating: true,
+               onRatingUpdate: (rating) {
+                 print(rating);
+               },
+             ),
+           ],
+         ),
+       ),
+
+       /* Column(
+          children: <Widget>[
+            FlutterRatingBar(
+              itemSize: 30,
+              initialRating: 3,
+              fillColor: Colors.amber,
+              borderColor: Colors.amber.withAlpha(50),
+              allowHalfRating: true,
+              onRatingUpdate: (rating) {
+                print(rating);
+              },
+            ),
+          ],
+        )*/
+      ],
+    ),
+  );
 }
